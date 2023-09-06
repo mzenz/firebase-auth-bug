@@ -1,63 +1,23 @@
-# Nuxt 3 Minimal Starter
+# Firebase SDK auth bug repro
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Steps to reproduce
 
-## Setup
+Start local dev server:
 
-Make sure to install the dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
+```sh
+$ yarn && yarn dev
 ```
 
-## Development Server
+1. Navigate to `http://localhost:3000`
+1. Enter a valid email and click on "Send sign in link via email" button.
+1. Check your email inbox and click on sign in email. You should get authenticated.
+1. Click on "Sign out" button to log off.
+1. Click on "Sign in with Google" button and complete redirection flow to authorize app.
 
-Start the development server on `http://localhost:3000`:
+## Observed results
 
-```bash
-# npm
-npm run dev
+- `getRedirectResult()` returns null UserCredential despite Google redirection flow completing successfully.
 
-# pnpm
-pnpm run dev
+## Expected results
 
-# yarn
-yarn dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- `getRedirectResult()` should return a valid UserCredential and `onAuthStateChanged()` should fire accordingly.
